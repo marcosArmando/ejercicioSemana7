@@ -10,5 +10,11 @@ export default class apiActivities {
             .then((data) => this.dataReceived = data);
     }
  
+    static getQuestionsBoolean(arrayQuery){
+        fetch(`https://opentdb.com/api.php?amount=${arrayQuery[0]}&category=${arrayQuery[1]}&difficulty=${arrayQuery[2]}&type=${arrayQuery[3]}`)
+            .then((response) => response.json())
+            .then((data) => uiActivities.printQuestionsBoolean(data))
+            .then((data) => this.dataReceived = data);
+    }
 
 }

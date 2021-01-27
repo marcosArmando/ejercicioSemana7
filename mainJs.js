@@ -5,12 +5,22 @@ const formQuestions = document.querySelector('#form-questions');
 const formAnswers = document.querySelector('#form-answers')
 const url = "https://opentdb.com/api_category.php";
 
+let dataToAsk;
 let dataReceived = [];
 
 function getCategories(urlRecibido){
     fetch(urlRecibido)
         .then((response) => response.json())
         .then((categories) => uiActivities.printCategories(categories));
+}
+
+function getNumberOfCuestions() {
+
+    let numberContainer = document.getElementById("amount-selector");
+
+    for(let i = 1; i < 50; i++){
+        numberContainer.innerHTML +=  `<option value="${i}">${i}</option>`;
+    }
 }
 
 function getUrl(){
@@ -28,18 +38,27 @@ function getUrl(){
     
 }
 
-
 getCategories(url);
+getNumberOfCuestions();
 
 formQuestions.addEventListener('submit', (event) => {
     event.preventDefault();
-    getUrl();
-    apiActivities.getQuestions(getUrl());
+    console.log("call of duty");
+    dataToAsk = getUrl();
+    if(dataToAsk[3] === "boolean"){
+        apiActivities.getQuestionsBoolean(getUrl());
+    } else {
+        apiActivities.getQuestions(getUrl());
+    }
+
 });
 
 formAnswers.addEventListener('submit', (event) => {
     event.preventDefault();
-    uiActivities.getScore(apiActivities.dataReceived);
+    if(dataToAsk[3] === "boolean"){
+        uiActivities.getScoreBoolean(apiActivities.dataReceived);
+    } else {
+        uiActivities.getScore(apiActivities.dataReceived);
+    }
     console.log()
 });
-
